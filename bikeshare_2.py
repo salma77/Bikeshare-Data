@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 CITY_DATA = { 'chicago': 'chicago.csv',
-              'new york city': 'new_york_city.csv',
+              'new york': 'new_york_city.csv',
               'washington': 'washington.csv' }
 
 def get_filters():
@@ -17,13 +17,40 @@ def get_filters():
     """
     print('Hello! Let\'s explore some US bikeshare data!')
     # get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
+    cities = ['Chicago', 'Washington', 'New York']
+    city = ""
+    while True:
+        city = input("Would you like to see the data for Chicago, Washington or New York?\n")
+        if city not in cities:
+            print("Please enter a valid format\n")
+        else:
+            break
 
+    city = city.lower()
 
     # get user input for month (all, january, february, ... , june)
+    months = ['January', 'February', 'March', 'April', 'May', 'June']
+    month = ""
+    while True:
+        month = input("Please choose a month: January, February, March, April, May, June\n")
+        if month not in months:
+            print("Please enter a valid format\n")
+        else:
+            break
 
+    month = month.lower()
 
     # get user input for day of week (all, monday, tuesday, ... sunday)
 
+    while True:
+        day = input("Please choose a day by number(i.e. 1=Sunday)\n")
+        if int(day) < 0 or int(day) > 7:
+            print("Please enter a valid format\n")
+        else:
+            break
+
+    days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+    day = days[int(day) - 1]
 
     print('-'*40)
     return city, month, day
@@ -40,7 +67,29 @@ def load_data(city, month, day):
     Returns:
         df - Pandas DataFrame containing city data filtered by month and day
     """
+ # load data file into a dataframe
+    df = pd.read_csv(CITY_DATA[city])
 
+    # convert the Start Time column to datetime
+    df['Start Time'] = pd.to_datetime(df['Start Time'])
+
+    # extract month and day of week from Start Time to create new columns
+    df['month'] = df['Start Time'].dt.month
+    df['day_of_week'] = df['Start Time'].dt.day_name
+
+    # filter by month if applicable
+    if month != 'all':
+        # use the index of the months list to get the corresponding int
+        months = ['january', 'february', 'march', 'april', 'may', 'june']
+        month = months.index(month) + 1
+
+        # filter by month to create the new dataframe
+        df = df[df['month'] == month]
+
+    # filter by day of week if applicable
+    if day != 'all':
+        # filter by day of week to create the new dataframe
+        df = df[df['day_of_week'] == day.title()]
 
     return df
 
