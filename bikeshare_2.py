@@ -25,8 +25,6 @@ def get_filters():
             city_selection = input("Would you like to see the data for a: Chicago, b: Washington or c: New York?\n")
             if city_selection in ['a','b','c']:
                 break
-            else:
-                print("Invalid selection")
         except KeyboardInterrupt as e:
                 print("Invalid selection")
 
