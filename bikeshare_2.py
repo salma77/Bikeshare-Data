@@ -5,6 +5,9 @@ import numpy as np
 CITY_DATA = { 'chicago': 'chicago.csv',
               'new york': 'new_york_city.csv',
               'washington': 'washington.csv' }
+days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'all']
+cities = ['Chicago', 'Washington', 'New York']
+months = ['january', 'february', 'march', 'april', 'may', 'june', 'all']
 
 def get_filters():
     """
@@ -17,8 +20,6 @@ def get_filters():
     """
     print('Hello! Let\'s explore some US bikeshare data!')
     # get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
-    cities = ['Chicago', 'Washington', 'New York']
-    city = ""
     while True:
         city = input("Would you like to see the data for Chicago, Washington or New York?\n")
         if city not in cities:
@@ -29,8 +30,6 @@ def get_filters():
     city = city.lower()
 
     # get user input for month (all, january, february, ... , june)
-    months = ['January', 'February', 'March', 'April', 'May', 'June']
-    month = ""
     while True:
         month = input("Please choose a month: January, February, March, April, May, June\n")
         if month not in months:
@@ -49,7 +48,6 @@ def get_filters():
         else:
             break
 
-    days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
     day = days[int(day) - 1]
 
     print('-'*40)
@@ -80,7 +78,7 @@ def load_data(city, month, day):
     # filter by month if applicable
     if month != 'all':
         # use the index of the months list to get the corresponding int
-        months = ['january', 'february', 'march', 'april', 'may', 'june']
+        months = ['january', 'february', 'march', 'april', 'may', 'june', 'all']
         month = months.index(month) + 1
 
         # filter by month to create the new dataframe
@@ -99,15 +97,15 @@ def time_stats(df):
 
     print('\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
-
-    # display the most common month
-
-
-    # display the most common day of week
-
-
-    # display the most common start hour
-
+    try:
+        # display the most common month
+        print("The most common month is ", df['month'].value_counts().idxmax())
+        # display the most common day of week
+        print("The most common day of the week is ", df['day_of_week'].value_counts().idxmax())
+        # display the most common start hour
+        print("The most common start hour is ", df['Start time'].value_counts().idxmax())
+    except ValueError as e:
+        print(e.args)
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -118,15 +116,15 @@ def station_stats(df):
 
     print('\nCalculating The Most Popular Stations and Trip...\n')
     start_time = time.time()
-
-    # display most commonly used start station
-
-
-    # display most commonly used end station
-
-
-    # display most frequent combination of start station and end station trip
-
+    try:
+        # display most commonly used start station
+        print("The most common start station is ", df['Start Station'].value_counts().idxmax())
+        # display most commonly used end station
+        print("The most common end station is ", df['End Station'].value_counts().idxmax())
+        # display most frequent combination of start station and end station trip
+        print("The most frequent combination of start station and end station trip is ", df.groupby(['Start Station', 'End Station'].size().idxmax()))
+    except ValueError as e:
+        pass
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -137,12 +135,15 @@ def trip_duration_stats(df):
 
     print('\nCalculating Trip Duration...\n')
     start_time = time.time()
-
-    # display total travel time
-
-
-    # display mean travel time
-
+    try:
+        # display total travel time
+        print("Total travel time is ", sum(df['Trip Duration']))
+        # display mean travel time
+        print("Mean travel time is ", df.loc[:, "Trip Duration"].mean())
+    except ValueError as e:
+        print(e.args)
+    except Exception as e:
+        print(e.args)
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -153,15 +154,19 @@ def user_stats(df):
 
     print('\nCalculating User Stats...\n')
     start_time = time.time()
-
-    # Display counts of user types
-
-
-    # Display counts of gender
-
-
-    # Display earliest, most recent, and most common year of birth
-
+    try:
+        # Display counts of user types
+        print("User Types: ", df['User Type'].value_counts())
+        # Display counts of gender
+        print("Gender count: ", df['Gender'].value_counts())
+        # Display earliest, most recent, and most common year of birth
+        print("Earliest Year of Birth ", df['Birth Year'].min())
+        print("Most Recent Year of Birth ", df['Birth Year'].max())
+        print("Most Common Year of Birth ", df['Birth Year'].value_counts().idxmax())
+    except KeyError as e:
+        print(e.args)
+    except Exception as e:
+        print(e.args)
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
