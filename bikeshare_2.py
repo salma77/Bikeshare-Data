@@ -3,10 +3,10 @@ import pandas as pd
 import numpy as np
 
 CITY_DATA = { 'chicago': 'chicago.csv',
-              'new york': 'new_york_city.csv',
+              'new york city': 'new_york_city.csv',
               'washington': 'washington.csv' }
 days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'all']
-cities = ['Chicago', 'Washington', 'New York']
+cities = {'a':'chicago','b':'washington', 'c':'new york city'}
 months = ['january', 'february', 'march', 'april', 'may', 'june', 'all']
 
 def get_filters():
@@ -21,13 +21,16 @@ def get_filters():
     print('Hello! Let\'s explore some US bikeshare data!')
     # get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
     while True:
-        city = input("Would you like to see the data for Chicago, Washington or New York?\n")
-        if city not in cities:
-            print("Please enter a valid format\n")
-        else:
-            break
+        try:
+            city_selection = input("Would you like to see the data for a: Chicago, b: Washington or c: New York?\n")
+            if city_selection in ['a','b','c']:
+                break
+            else:
+                print("Invalid selection")
+        except KeyboardInterrupt as e:
+                print("Invalid selection")
 
-    city = city.lower()
+    city = cities[city_selection].lower()
 
     # get user input for month (all, january, february, ... , june)
     while True:
