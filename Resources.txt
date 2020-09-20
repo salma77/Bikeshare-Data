@@ -1,0 +1,7 @@
+1-https://docs.python.org/3/library/datetime.html
+2-https://stackoverflow.com/questions/60214194/error-in-reading-stock-data-datetimeproperties-object-has-no-attribute-week
+3-Pandas lesson in Udacity course
+4-https://www.geeksforgeeks.org/python-pandas-dataframe-idxmax/
+5-https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.groupby.html
+6-https://www.programiz.com/python-programming/assert-statement(for testing)
+7-https://stackoverflow.com/questions/53025207/how-do-i-remove-name-and-dtype-from-pandas-output
